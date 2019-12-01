@@ -2,6 +2,7 @@ package com.barcode.web.controller;
 
 import com.barcode.web.domain.posts.PostsRepository;
 import com.barcode.web.dto.PostsSaveRequestDto;
+import com.barcode.web.service.PostsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class WebRestController {
 
-    private PostsRepository postsRepository;
+    private PostsService postsService;
 
     @GetMapping("/hello")
     public String hello(){
@@ -20,15 +21,14 @@ public class WebRestController {
     }
 
     @PostMapping("/posts")
-    public void savePosts(@RequestBody PostsSaveRequestDto dto){
+    public Long savePosts(@RequestBody PostsSaveRequestDto dto){
 
         System.out.println("Post posts !");
         System.out.println("Post title : " + dto.getTitle());
         System.out.println("Post content : " + dto.getContent());
         System.out.println("Post author : " + dto.getAuthor());
-        postsRepository.save(dto.toEntity()
 
-        );
+        return postsService.save(dto);
     }
 
 }
