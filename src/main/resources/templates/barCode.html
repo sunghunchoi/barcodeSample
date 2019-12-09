@@ -24,13 +24,13 @@
             </tr>
             </thead>
             <tbody id="tbody">
-            <tr th:each="site : ${sites}">
-                <td></td>
+            <tr th:each="site, siteSta : ${sites}">
+                <td th:text="${siteSta.count}"></td>
                 <td>
-                <div th:id="${site.name}"  style="margin-top:30px;" ></div>
+                <div th:id="${site.barCodeName}"  style="margin-top:20px;" ></div>
                 </td>
                 <td>
-                <div id="qrTarget" style="margin-top:30px;"></div>
+                <div th:id="${site.qrCodeName}" style="margin-top:20px;"></div>
                 </td>
                 <td th:text="${site.code}">modifiedDate</td>
             </tr>
@@ -43,16 +43,33 @@
     <script src="/js/lib/jquery.min.js"></script>
     <script src="/js/lib/bootstrap.min.js"></script>
 	<script src="/js/lib/jquery-barcode.js"></script>
-    <!--custom js 추가-->
-    <script src="/js/app/barcode.js"></script>
+	<script src="/js/lib/qrcode.js"></script>
 
     <!-- barcode作成 -->
-    <script type="text/javascript">
+    <script th:inline="javascript">
+    /*<![CDATA[*/
 
-    $("#googleA").barcode("www.google.com", "code128");
-    $("#naverA").barcode("www.naver.com", "code128");
+    //서버로 부터 값 받기
+    var  sites = /*[[${sites}]]*/;
 
+    //QRcode, Barcode작성
+	for (var i = 0; i < sites.length; i++) {
+		//Barcode작성
+		$("#"+sites[i].barCodeName).barcode(sites[i].code, "code128",{fontSize:25});
 
+		//QRcode작성
+		 var qrcode = new QRCode(document.getElementById(sites[i].qrCodeName), {
+		        text: sites[i].code,
+		        width: 128,
+		        height: 128,
+		        colorDark : "#000000",
+		        colorLight : "#ffffff",
+		        correctLevel : QRCode.CorrectLevel.H
+		    });
+		    $( "#" + sites[i].qrCodeName + " > img").css({"margin":"auto"});
+		}
+
+    /*]]>*/
     </script>
 
 

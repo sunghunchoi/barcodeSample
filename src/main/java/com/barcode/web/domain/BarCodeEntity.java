@@ -9,7 +9,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BarCodeEntity {
 
-	public String name;
+	public String barCodeName;
+
+	public String qrCodeName;
+
 	public String code;
 
 }
