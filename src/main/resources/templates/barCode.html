@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BarCodePage</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--부트스트랩 css 추가-->
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+</head>
+<body>
+    <h1>SamplePage(BarCode)</h1>
+    <div class="col-md-12">
+        <br/>
+        <br/>
+        <!-- 목록 출력 영역 -->
+        <table class="table table-horizontal table-bordered">
+            <thead class="thead-strong">
+            <tr>
+                <th>番号</th>
+                <th>BarCode</th>
+                <th>QRCode</th>
+                <th>名称</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <tr th:each="site, siteSta : ${sites}">
+                <td th:text="${siteSta.count}"></td>
+                <td>
+                <div th:id="${site.barCodeName}"  style="margin-top:20px;" ></div>
+                </td>
+                <td>
+                <div th:id="${site.qrCodeName}" style="margin-top:20px;"></div>
+                </td>
+                <td th:text="${site.code}">modifiedDate</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!--부트스트랩 js, jquery 추가-->
+    <script src="/js/lib/jquery.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+	<script src="/js/lib/jquery-barcode.js"></script>
+	<script src="/js/lib/qrcode.js"></script>
+
+    <!-- barcode作成 -->
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+
+    //서버로 부터 값 받기
+    var  sites = /*[[${sites}]]*/;
+
+    //QRcode, Barcode작성
+	for (var i = 0; i < sites.length; i++) {
+		//Barcode작성
+		$("#"+sites[i].barCodeName).barcode(sites[i].code, "code128",{fontSize:25});
+
+		//QRcode작성
+		 var qrcode = new QRCode(document.getElementById(sites[i].qrCodeName), {
+		        text: sites[i].code,
+		        width: 128,
+		        height: 128,
+		        colorDark : "#000000",
+		        colorLight : "#ffffff",
+		        correctLevel : QRCode.CorrectLevel.H
+		    });
+		    $( "#" + sites[i].qrCodeName + " > img").css({"margin":"auto"});
+		}
+
+    /*]]>*/
+    </script>
+
+
+</body>
+</html>

@@ -5,6 +5,7 @@ var main = {
             _this.save();
         });
     },
+
     save : function () {
         var data = {
             title: $('#title').val(),
@@ -24,8 +25,8 @@ var main = {
         }).fail(function (error) {
             alert(error);
         });
-    }
+    },
 
-};
+   };
 
 main.init();
